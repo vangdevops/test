@@ -29,11 +29,11 @@ func Init() {
 	flag.BoolVar(&JSONFlag, "json", false, "Enable JSON View (Default: false)")
 	flag.BoolVar(&ColorFlag, "color", true, "Enable Color View\n(example: -color=true/false)\n(WARNING: IF json - color disabled)")
 
-	flag.StringVar(&DBUser, "dbuser", "", "Database User\n(example: -dbuser=test)\n(ENV: DBUSER)")
-	flag.StringVar(&DBPass, "dbpass", "", "Database Password\n(example: -dbpass=test)\n(ENV: DBPASS)")
-	flag.StringVar(&DBHost, "dbhost", "", "Database Host\n(example: -dbhost=localhost:3306)\n(ENV: DBHOST)")
-	flag.StringVar(&DBName, "dbname", "", "Database Name\n(example: -dbname=test)\n(ENV: DBNAME)")
-	stringSliceVar(&DBTable, "dbtable", "", "Database Tables\n(example: -dbtable=example,test)")
+	flag.StringVar(&DBUser, "dbuser", "test", "Database User\n(ENV: DBUSER)")
+	flag.StringVar(&DBPass, "dbpass", "test", "Database Password\n(ENV: DBPASS)")
+	flag.StringVar(&DBHost, "dbhost", "127.0.0.1:3306", "Database Host\n(ENV: DBHOST)")
+	flag.StringVar(&DBName, "dbname", "test", "Database Name\n(ENV: DBNAME)")
+	stringSliceVar(&DBTable, "dbtable", "example,test", "Database Tables")
 
 	flag.Parse()
 }
