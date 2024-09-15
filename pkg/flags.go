@@ -33,7 +33,7 @@ func Init() {
 	flag.StringVar(&DBPass, "dbpass", "test", "Database Password\n(ENV: DBPASS)")
 	flag.StringVar(&DBHost, "dbhost", "127.0.0.1:3306", "Database Host\n(ENV: DBHOST)")
 	flag.StringVar(&DBName, "dbname", "test", "Database Name\n(ENV: DBNAME)")
-	stringSliceVar(&DBTable, "dbtable", "example,test", "Database Tables")
+	stringSliceVar(&DBTable, "dbtable", "", "Database Tables")
 
 	flag.Parse()
 }
