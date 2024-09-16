@@ -13,6 +13,7 @@ pipeline {
 				script {
 					try {
 						sh 'golangci-lint run'
+						sh 'go test ./... -v'
 						echo 'Linting Success!'
 					} catch (err) {
 						echo 'Lint failed'

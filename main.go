@@ -88,11 +88,7 @@ func main() {
 	startcheck := time.Now()
 	for _,table := range tables {
 		go func(table string) {
-			found,err := database.CheckTable(db,table)
-			if err != nil {
-				slog.Error(err.Error())
-				os.Exit(1)
-			}
+			found := database.CheckTable(db,table)
 			if !found {
 				err := database.CreateTable(db,table)
 				if err != nil {
@@ -101,6 +97,7 @@ func main() {
 				}
 				slog.Debug("Created table: "+table)
 			}
+			slog.Debug("Table found: "+table)
 			done <- struct{}{}
 		}(table)
 	}
