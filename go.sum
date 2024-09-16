@@ -16,3 +16,5 @@ gitlab.com/vangdevops/mylibrary v0.0.0-20240916192353-622715feea98 h1:QGbaM3QV5z
 gitlab.com/vangdevops/mylibrary v0.0.0-20240916192353-622715feea98/go.mod h1:OjeNAyWHok38U0Mz07eBV5iQkKoD/GbW06nxyMYnLuc=
 gitlab.com/vangdevops/mylibrary v0.0.0-20240916192714-b5bdc158ba48 h1:79O3BPuxm/siMZ1SxVxo5KgSPyPgQiAzgyzHTu3xMx0=
 gitlab.com/vangdevops/mylibrary v0.0.0-20240916192714-b5bdc158ba48/go.mod h1:OjeNAyWHok38U0Mz07eBV5iQkKoD/GbW06nxyMYnLuc=
+gitlab.com/vangdevops/mylibrary v0.0.0-20240916193245-30d28f26d20e h1:U2G2dTIfH6PYkljDMTdGRwrTFlLQuH6laMyWEbJWB1w=
+gitlab.com/vangdevops/mylibrary v0.0.0-20240916193245-30d28f26d20e/go.mod h1:OjeNAyWHok38U0Mz07eBV5iQkKoD/GbW06nxyMYnLuc=
