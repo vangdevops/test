@@ -1,10 +1,10 @@
 module main
 
-go 1.22.5
+go 1.23.0
 
 require (
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
-	gitlab.com/vangdevops/mylibrary v0.0.0-20240915110510-9d6d4792c27b
+	gitlab.com/vangdevops/mylibrary v0.0.0-20240916185840-4efdf27178af
 )
 
 require (

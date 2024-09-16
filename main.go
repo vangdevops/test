@@ -70,14 +70,14 @@ func main() {
 
 	figure.NewColorFigure("Dragon", "graffiti","reset", true).Print()
 	slog.Info("CPU:" + cpu + " "+"Memory: " + memory +"MB")
-	err = database.DatabaseConnect(connection)
+	db,err = database.DatabaseConnect(connection)
 	if err != nil {
 		slog.Error(err.Error())
 		os.Exit(1)
 	}
 
 	done := make(chan struct{})
-	version,err := database.GetVersion()
+	version,err := database.GetVersion(db)
 	if err != nil {
 		slog.Error(err.Error())
 		os.Exit(1)
@@ -88,13 +88,13 @@ func main() {
 	startcheck := time.Now()
 	for _,table := range tables {
 		go func(table string) {
-			found,err := database.CheckTable(table)
+			found,err := database.CheckTable(db,table)
 			if err != nil {
 				slog.Error(err.Error())
 				os.Exit(1)
 			}
 			if !found {
-				err := database.CreateTable(table)
+				err := database.CreateTable(db,table)
 				if err != nil {
 					slog.Error(err.Error())
 					os.Exit(1)
@@ -113,7 +113,7 @@ func main() {
 	startcheck = time.Now()
 	for _,table := range tables {
 		go func(table string) {
-			err := database.DeleteTable(table)
+			err := database.DeleteTable(db,table)
 			if err != nil {
 				slog.Error("Error delete tables: "+table)
 				os.Exit(1)
