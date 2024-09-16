@@ -70,7 +70,7 @@ func main() {
 
 	figure.NewColorFigure("Dragon", "graffiti","reset", true).Print()
 	slog.Info("CPU:" + cpu + " "+"Memory: " + memory +"MB")
-	db,err = database.DatabaseConnect(connection)
+	db,err := database.DatabaseConnect(connection)
 	if err != nil {
 		slog.Error(err.Error())
 		os.Exit(1)
