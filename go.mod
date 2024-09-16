@@ -4,7 +4,7 @@ go 1.23.0
 
 require (
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
-	gitlab.com/vangdevops/mylibrary v0.0.0-20240916193245-30d28f26d20e
+	gitlab.com/vangdevops/mylibrary v0.0.0-20240916194437-5f937aa209c3
 )
 
 require (
