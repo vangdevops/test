@@ -88,8 +88,8 @@ func main() {
 	startcheck := time.Now()
 	for _,table := range tables {
 		go func(table string) {
-			found := database.CheckTable(db,table)
-			if !found {
+			err := database.CheckTable(db,table)
+			if err := nil {
 				err := database.CreateTable(db,table)
 				if err != nil {
 					slog.Error(err.Error())
