@@ -89,7 +89,7 @@ func main() {
 	for _,table := range tables {
 		go func(table string) {
 			err := database.CheckTable(db,table)
-			if err := nil {
+			if err != nil {
 				err := database.CreateTable(db,table)
 				if err != nil {
 					slog.Error(err.Error())
