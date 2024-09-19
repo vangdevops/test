@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 	"runtime"
-	"gitlab.com/vangdevops/mylibrary/database"
-	"gitlab.com/vangdevops/mylibrary/info"
+	"github.com/VaDevOps/library/database"
+	"github.com/VaDevOps/library/info"
 )
 
 func main() {

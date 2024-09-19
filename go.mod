@@ -3,8 +3,8 @@ module main
 go 1.23.0
 
 require (
+	github.com/VaDevOps/library v0.0.0-20240919223311-e192ec16c87e
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
-	gitlab.com/vangdevops/mylibrary v0.0.0-20240919201556-10490adefcca
 )
 
 require (
