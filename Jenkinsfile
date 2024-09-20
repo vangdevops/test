@@ -48,6 +48,8 @@ pipeline {
 					sh 'docker stop --time=1 mysql_${BUILD_NUMBER} '
 					sh 'docker rm -vf $(docker ps -aq)'
 					echo 'Clean Success!'
+					echo ''
+					echo 'Type CTRL+C to exit '
 				}
 			}
 		}
