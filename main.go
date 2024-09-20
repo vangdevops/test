@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/common-nighthawk/go-figure"
+	"syscall"
 	"log/slog"
 	"main/pkg"
 	"os"
@@ -60,7 +61,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	memory,err := info.Memory()
+	memory,err := info.Memory(syscall.Sysinfo)
 	if err != nil {
 		slog.Error("Error get memory: "+err.Error())
 		os.Exit(1)
