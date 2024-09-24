@@ -8,5 +8,7 @@ github.com/go-sql-driver/mysql v1.8.1 h1:LedoTUt/eveggdHS9qUFC1EFSa8bU2+1pZjSRpv
 github.com/go-sql-driver/mysql v1.8.1/go.mod h1:wEBSXgmK//2ZFJyE+qWnIsVGmvmEKlqwuVSjsCm7DZg=
 github.com/lmittmann/tint v1.0.5 h1:NQclAutOfYsqs2F1Lenue6OoWCajs5wJcP3DfWVpePw=
 github.com/lmittmann/tint v1.0.5/go.mod h1:HIS3gSy7qNwGCj+5oRjAutErFBl4BzdQP6cJZ0NfMwE=
-github.com/vangdevops/library v0.0.0-20240920073649-88bb96924e73 h1:M2LfK9sfLffe5+6S4jvaSqwbIWrYUfWO3bynKeU27ZY=
-github.com/vangdevops/library v0.0.0-20240920073649-88bb96924e73/go.mod h1:AAtUKS28fkQVxMGQMnCG8cICInoj6syiQAXEN2wvC54=
+github.com/vangdevops/library v0.0.0-20240921182255-b242ab7e448c h1:Vz9rizeOGUwN0Cn8+7WJvW1IFIaJ5x6j9fWiEAu9oO0=
+github.com/vangdevops/library v0.0.0-20240921182255-b242ab7e448c/go.mod h1:AAtUKS28fkQVxMGQMnCG8cICInoj6syiQAXEN2wvC54=
+github.com/vangdevops/library v0.0.1 h1:6WD+0kLwM3EHziJZnmAzYT1tCWD41r2Ra0E8/CxCt0o=
+github.com/vangdevops/library v0.0.1/go.mod h1:AAtUKS28fkQVxMGQMnCG8cICInoj6syiQAXEN2wvC54=
