@@ -22,7 +22,7 @@ func main() {
 		dbUser = pkg.DBUser
 		if dbUser == "" {
 			slog.Error("Need to set Database User!")
-			os.Exit(1)
+			os.Exit(0)
 		}
 	}
 
@@ -31,7 +31,7 @@ func main() {
 		dbPassword = pkg.DBPass
 		if dbPassword == "" {
 			slog.Error("Need to set Database Password!")
-			os.Exit(1)
+			os.Exit(0)
 		}
 	} 
 
@@ -40,7 +40,7 @@ func main() {
 		dbHost = pkg.DBHost
 		if dbHost == "" {
 			slog.Error("Need to set Database Host!")
-			os.Exit(1)
+			os.Exit(0)
 		}
 	}
 
@@ -49,7 +49,7 @@ func main() {
 		dbName = pkg.DBName
 		if dbName == "" {
 			slog.Error("Need to set Database Name!")
-			os.Exit(1)
+			os.Exit(0)
 		}
 	}
 
@@ -58,7 +58,7 @@ func main() {
 	tables := pkg.DBTable
 	if len(tables) == 0 {
 		slog.Error("Need Tables!")
-		os.Exit(1)
+		os.Exit(0)
 	}
 
 	memory,err := info.Memory(syscall.Sysinfo)
