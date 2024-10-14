@@ -37,10 +37,10 @@ pipeline {
 			steps {
 				sh 'docker run --name mysql_${BUILD_NUMBER} -d -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=test -e MYSQL_USER=test -e MYSQL_PASSWORD=test -p 3306:3306 mysql'
 				sh 'sleep 30'
-				sh './main -color=false -dbtable test'
-				sh './main -color=false -debug -dbtable test'
-				sh './main -json=true -dbtable test'
-				sh './main -json=true -debug -dbtable test'
+				sh './main -color=false -dbtable ${TABLE}'
+				sh './main -color=false -debug -dbtable ${TABLE}'
+				sh './main -json=true -dbtable ${TABLE}'
+				sh './main -json=true -debug -dbtable ${TABLE}'
 				echo 'Test Success!'
 			}
 			post {
