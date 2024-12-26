@@ -46,7 +46,7 @@ pipeline {
 			post {
 				always {
 					sh 'docker stop --time=1 mysql_${BUILD_NUMBER} '
-					sh 'docker rm -vf $(docker ps -aq)'
+					sh 'docker rm -f mysql_${BUILD_NUMBER}
 					echo 'Clean Success!'
 					echo ''
 					echo 'Type CTRL+C to exit '
