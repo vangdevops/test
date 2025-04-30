@@ -6,7 +6,11 @@ github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be h1:J5BL
 github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be/go.mod h1:mk5IQ+Y0ZeO87b858TlA645sVcEcbiX6YqP98kt+7+w=
 github.com/go-sql-driver/mysql v1.8.1 h1:LedoTUt/eveggdHS9qUFC1EFSa8bU2+1pZjSRpvNJ1Y=
 github.com/go-sql-driver/mysql v1.8.1/go.mod h1:wEBSXgmK//2ZFJyE+qWnIsVGmvmEKlqwuVSjsCm7DZg=
+github.com/lib/pq v1.10.9 h1:YXG7RB+JIjhP29X+OtkiDnYaXQwpS4JEWq7dtCCRUEw=
+github.com/lib/pq v1.10.9/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
 github.com/lmittmann/tint v1.0.5 h1:NQclAutOfYsqs2F1Lenue6OoWCajs5wJcP3DfWVpePw=
 github.com/lmittmann/tint v1.0.5/go.mod h1:HIS3gSy7qNwGCj+5oRjAutErFBl4BzdQP6cJZ0NfMwE=
 github.com/vangdevops/library v1.0.0 h1:q0utbM/hzc3emD9A4ryc4C0Vvle5NuCq4xJpt6HCNzo=
 github.com/vangdevops/library v1.0.0/go.mod h1:AAtUKS28fkQVxMGQMnCG8cICInoj6syiQAXEN2wvC54=
+github.com/vangdevops/library v1.1.0 h1:WVyJ4hnQdqqm9RydhrZo4bSU6ZP6nzOCHX9fm8VKUQE=
+github.com/vangdevops/library v1.1.0/go.mod h1:AAtUKS28fkQVxMGQMnCG8cICInoj6syiQAXEN2wvC54=

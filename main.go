@@ -1,13 +1,14 @@
 package main
 
 import (
-	"github.com/common-nighthawk/go-figure"
-	"syscall"
 	"log/slog"
 	"main/pkg"
 	"os"
-	"time"
 	"runtime"
+	"syscall"
+	"time"
+
+	"github.com/common-nighthawk/go-figure"
 	"github.com/vangdevops/library/database"
 	"github.com/vangdevops/library/info"
 )
@@ -15,7 +16,7 @@ import (
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	pkg.Init()
-	info.Log(pkg.JSONFlag,pkg.DebugFlag,pkg.ColorFlag)
+	info.Log(pkg.JSONFlag, pkg.DebugFlag, pkg.ColorFlag)
 
 	dbUser, present := os.LookupEnv("DBUSER")
 	if !present {
@@ -33,7 +34,7 @@ func main() {
 			slog.Error("Need to set Database Password!")
 			os.Exit(0)
 		}
-	} 
+	}
 
 	dbHost, present := os.LookupEnv("DBHOST")
 	if !present {
@@ -53,7 +54,7 @@ func main() {
 		}
 	}
 
-	connection := dbUser + ":" + dbPassword + "@tcp" + "(" + dbHost + ")/" + dbName
+	connection := "postgres://" + dbUser + ":" + dbPassword + "@" + dbHost + "/" + dbName + "?sslmode=disabled"
 
 	tables := pkg.DBTable
 	if len(tables) == 0 {
@@ -61,24 +62,24 @@ func main() {
 		os.Exit(0)
 	}
 
-	memory,err := info.Memory(syscall.Sysinfo)
+	memory, err := info.Memory(syscall.Sysinfo)
 	if err != nil {
-		slog.Error("Error get memory: "+err.Error())
+		slog.Error("Error get memory: " + err.Error())
 		os.Exit(1)
 	}
 
 	cpu := info.CPU()
 
-	figure.NewColorFigure("Dragon", "graffiti","reset", true).Print()
-	slog.Info("CPU:" + cpu + " "+"Memory: " + memory +"MB")
-	db,err := database.DatabaseConnect(connection)
+	figure.NewColorFigure("Dragon", "graffiti", "reset", true).Print()
+	slog.Info("CPU:" + cpu + " " + "Memory: " + memory + "MB")
+	db, err := database.DatabaseConnect(connection)
 	if err != nil {
 		slog.Error(err.Error())
 		os.Exit(1)
 	}
 
 	done := make(chan struct{})
-	version,err := database.GetVersion(db)
+	version, err := database.GetVersion(db)
 	if err != nil {
 		slog.Error(err.Error())
 		os.Exit(1)
@@ -87,36 +88,36 @@ func main() {
 
 	slog.Info("Checking Tables...")
 	startcheck := time.Now()
-	for _,table := range tables {
+	for _, table := range tables {
 		go func(table string) {
-			err := database.CheckTable(db,table)
+			err := database.CheckTable(db, table)
 			if err != nil {
-				err := database.CreateTable(db,table)
+				err := database.CreateTable(db, table)
 				if err != nil {
 					slog.Error(err.Error())
 					os.Exit(1)
 				}
-				slog.Debug("Created table: "+table)
+				slog.Debug("Created table: " + table)
 			}
-			slog.Debug("Table found: "+table)
+			slog.Debug("Table found: " + table)
 			done <- struct{}{}
 		}(table)
 	}
 	for range tables {
 		<-done
 	}
-	
+
 	elapsed := time.Since(startcheck)
-	slog.Info("Checking Succesfully! in:"+elapsed.String())
+	slog.Info("Checking Succesfully! in:" + elapsed.String())
 	startcheck = time.Now()
-	for _,table := range tables {
+	for _, table := range tables {
 		go func(table string) {
-			err := database.DeleteTable(db,table)
+			err := database.DeleteTable(db, table)
 			if err != nil {
-				slog.Error("Error delete tables: "+table)
+				slog.Error("Error delete tables: " + table)
 				os.Exit(1)
 			}
-			slog.Debug("Deleted table: "+table)
+			slog.Debug("Deleted table: " + table)
 			done <- struct{}{}
 		}(table)
 	}
@@ -125,5 +126,5 @@ func main() {
 		<-done
 	}
 	elapsed = time.Since(startcheck)
-	slog.Info("Deleted Succesfully! in:"+elapsed.String())
+	slog.Info("Deleted Succesfully! in:" + elapsed.String())
 }
