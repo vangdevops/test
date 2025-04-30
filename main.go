@@ -54,7 +54,7 @@ func main() {
 		}
 	}
 
-	connection := "postgres://" + dbUser + ":" + dbPassword + "@" + dbHost + "/" + dbName + "?sslmode=disabled"
+	connection := "postgres://" + dbUser + ":" + dbPassword + "@" + dbHost + "/" + dbName + "?sslmode=disable"
 
 	tables := pkg.DBTable
 	if len(tables) == 0 {
