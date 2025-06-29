@@ -28,10 +28,10 @@ go build -o dragon .
 ```bash
 Переменная	Назначение	Обязательная
 
-DBUSER	Пользователь PostgreSQL	✅
-DBPASS	Пароль PostgreSQL	✅
-DBHOST	Хост (например localhost)	✅
-DBNAME	Название базы данных	✅
+DBUSER	Пользователь PostgreSQL	 ✅
+DBPASS	Пароль PostgreSQL	 ✅
+DBHOST	Хост (например localhost) ✅
+DBNAME	Название базы данных 	✅
 ```
 
 Если переменные не заданы — используются значения по умолчанию из pkg.
