@@ -1,10 +1,13 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"log/slog"
 	"main/pkg"
 	"os"
 	"runtime"
+	"sync"
 	"syscall"
 	"time"
 
@@ -18,113 +21,127 @@ func main() {
 	pkg.Init()
 	info.Log(pkg.JSONFlag, pkg.DebugFlag, pkg.ColorFlag)
 
-	dbUser, present := os.LookupEnv("DBUSER")
-	if !present {
-		dbUser = pkg.DBUser
-		if dbUser == "" {
-			slog.Error("Need to set Database User!")
-			os.Exit(0)
-		}
+	cfg, err := loadConfig()
+	if err != nil {
+		slog.Error(err.Error())
+		os.Exit(1)
 	}
 
-	dbPassword, present := os.LookupEnv("DBPASS")
-	if !present {
-		dbPassword = pkg.DBPass
-		if dbPassword == "" {
-			slog.Error("Need to set Database Password!")
-			os.Exit(0)
-		}
-	}
-
-	dbHost, present := os.LookupEnv("DBHOST")
-	if !present {
-		dbHost = pkg.DBHost
-		if dbHost == "" {
-			slog.Error("Need to set Database Host!")
-			os.Exit(0)
-		}
-	}
-
-	dbName, present := os.LookupEnv("DBNAME")
-	if !present {
-		dbName = pkg.DBName
-		if dbName == "" {
-			slog.Error("Need to set Database Name!")
-			os.Exit(0)
-		}
-	}
-
-	connection := "postgres://" + dbUser + ":" + dbPassword + "@" + dbHost + "/" + dbName + "?sslmode=disable"
-
+	connection := createConnectionString(cfg)
 	tables := pkg.DBTable
 	if len(tables) == 0 {
 		slog.Error("Need Tables!")
-		os.Exit(0)
+		os.Exit(1)
 	}
 
 	memory, err := info.Memory(syscall.Sysinfo)
 	if err != nil {
-		slog.Error("Error get memory: " + err.Error())
+		slog.Error("Error getting memory: " + err.Error())
 		os.Exit(1)
 	}
-
 	cpu := info.CPU()
 
 	figure.NewColorFigure("Dragon", "graffiti", "reset", true).Print()
-	slog.Info("CPU:" + cpu + " " + "Memory: " + memory + "MB")
+	slog.Info("CPU:" + cpu + " Memory: " + memory + "MB")
+
 	db, err := database.DatabaseConnect(connection)
 	if err != nil {
 		slog.Error(err.Error())
 		os.Exit(1)
 	}
 
-	done := make(chan struct{})
-	version, err := database.GetVersion(db)
-	if err != nil {
+	if err := checkAndCreateTables(db, tables); err != nil {
 		slog.Error(err.Error())
 		os.Exit(1)
 	}
-	slog.Info("Database version: " + version)
 
+	if err := deleteTables(db, tables); err != nil {
+		slog.Error(err.Error())
+		os.Exit(1)
+	}
+}
+
+type dbConfig struct {
+	User     string
+	Password string
+	Host     string
+	Name     string
+}
+
+func loadConfig() (dbConfig, error) {
+	cfg := dbConfig{
+		User:     getEnvOrDefault("DBUSER", pkg.DBUser),
+		Password: getEnvOrDefault("DBPASS", pkg.DBPass),
+		Host:     getEnvOrDefault("DBHOST", pkg.DBHost),
+		Name:     getEnvOrDefault("DBNAME", pkg.DBName),
+	}
+	if cfg.User == "" || cfg.Password == "" || cfg.Host == "" || cfg.Name == "" {
+		return cfg, fmt.Errorf("database configuration incomplete")
+	}
+	return cfg, nil
+}
+
+func getEnvOrDefault(key, fallback string) string {
+	if val, ok := os.LookupEnv(key); ok {
+		return val
+	}
+	return fallback
+}
+
+func createConnectionString(cfg dbConfig) string {
+	return "postgres://" + cfg.User + ":" + cfg.Password + "@" + cfg.Host + "/" + cfg.Name + "?sslmode=disable"
+}
+
+func checkAndCreateTables(db *sql.DB, tables []string) error {
 	slog.Info("Checking Tables...")
-	startcheck := time.Now()
+	start := time.Now()
+	var wg sync.WaitGroup
+	errChan := make(chan error, len(tables))
 	for _, table := range tables {
-		go func(table string) {
-			err := database.CheckTable(db, table)
-			if err != nil {
-				err := database.CreateTable(db, table)
-				if err != nil {
-					slog.Error(err.Error())
-					os.Exit(1)
+		wg.Add(1)
+		go func(tbl string) {
+			defer wg.Done()
+			if err := database.CheckTable(db, tbl); err != nil {
+				if err := database.CreateTable(db, tbl); err != nil {
+					errChan <- fmt.Errorf("failed to create table %s: %w", tbl, err)
+					return
 				}
-				slog.Debug("Created table: " + table)
+				slog.Debug("Created table: " + tbl)
+			} else {
+				slog.Debug("Table found: " + tbl)
 			}
-			slog.Debug("Table found: " + table)
-			done <- struct{}{}
 		}(table)
 	}
-	for range tables {
-		<-done
+	wg.Wait()
+	close(errChan)
+	if err := <-errChan; err != nil {
+		return err
 	}
+	slog.Info("Checking Successfully! in: " + time.Since(start).String())
+	return nil
+}
 
-	elapsed := time.Since(startcheck)
-	slog.Info("Checking Succesfully! in:" + elapsed.String())
-	startcheck = time.Now()
+func deleteTables(db *sql.DB, tables []string) error {
+	slog.Info("Deleting Tables...")
+	start := time.Now()
+	var wg sync.WaitGroup
+	errChan := make(chan error, len(tables))
 	for _, table := range tables {
-		go func(table string) {
-			err := database.DeleteTable(db, table)
-			if err != nil {
-				slog.Error("Error delete tables: " + table)
-				os.Exit(1)
+		wg.Add(1)
+		go func(tbl string) {
+			defer wg.Done()
+			if err := database.DeleteTable(db, tbl); err != nil {
+				errChan <- fmt.Errorf("error deleting table %s: %w", tbl, err)
+				return
 			}
-			slog.Debug("Deleted table: " + table)
-			done <- struct{}{}
+			slog.Debug("Deleted table: " + tbl)
 		}(table)
 	}
-
-	for range tables {
-		<-done
+	wg.Wait()
+	close(errChan)
+	if err := <-errChan; err != nil {
+		return err
 	}
-	elapsed = time.Since(startcheck)
-	slog.Info("Deleted Succesfully! in:" + elapsed.String())
+	slog.Info("Deleted Successfully! in: " + time.Since(start).String())
+	return nil
 }
